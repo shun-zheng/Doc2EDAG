@@ -1,7 +1,7 @@
 # Doc2EDAG
 
 Source code for the paper,
-["Doc2EDAG: An End-to-End Document-level Framework for Chinese Financial Event Extraction"](https://arxiv.org/pdf/1904.07535),
+["Doc2EDAG: An End-to-End Document-level Framework for Chinese Financial Event Extraction"](https://arxiv.org/abs/1904.07535),
 in EMNLP 2019.
 
 
