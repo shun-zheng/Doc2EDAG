@@ -91,12 +91,19 @@ class DEETask(BasePytorchTask):
         self.example_loader_func = DEEExampleLoader(self.setting.rearrange_sent, self.setting.max_sent_len)
 
         # build feature converter
-        self.feature_converter_func = DEEFeatureConverter(
-            self.entity_label_list, self.event_type_fields_pairs,
-            self.setting.max_sent_len, self.setting.max_sent_num, self.tokenizer,
-            include_cls=False, include_sep=False,  # note this do not fit BERT inputs
-            # include_cls=True, include_sep=True,
-        )
+        if self.setting.use_bert:
+            self.feature_converter_func = DEEFeatureConverter(
+                self.entity_label_list, self.event_type_fields_pairs,
+                self.setting.max_sent_len, self.setting.max_sent_num, self.tokenizer,
+                include_cls=True, include_sep=True,
+            )
+        else:
+            self.feature_converter_func = DEEFeatureConverter(
+                self.entity_label_list, self.event_type_fields_pairs,
+                self.setting.max_sent_len, self.setting.max_sent_num, self.tokenizer,
+                include_cls=False, include_sep=False,
+            )
+
 
         # load data
         self._load_data(
@@ -116,7 +123,7 @@ class DEETask(BasePytorchTask):
 
         if self.setting.use_bert:
             ner_model = BertForBasicNER.from_pretrained(
-                self.setting.bert_model, self.setting.num_entity_labels
+                self.setting.bert_model, num_entity_labels = self.setting.num_entity_labels
             )
             self.setting.update_by_dict(ner_model.config.__dict__)  # BertConfig dictionary
 
